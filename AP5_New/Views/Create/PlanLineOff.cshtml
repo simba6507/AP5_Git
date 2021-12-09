@@ -1,0 +1,109 @@
+﻿@model AP5_New.Models.PlanLineoff
+@{
+    ViewData["Title"] = "計畫下線台數維護";
+}
+<div class="text-center">
+    <h2>計畫下線台數維護</h2>
+    <div class="text-danger" id="erroMessage">
+        @TempData["Message"]
+    </div>
+</div>
+
+@using (Html.BeginForm("ModLineOffPlan", "Create", FormMethod.Post, new { id = "Form1" }))
+{
+    @Html.AntiForgeryToken()
+    <div id="SearchConditionSection" class="col-12">
+        <table class="table table-bordered">
+            <tr>
+                <td><b>日期</b></td>
+                <td>
+                    @Html.TextBoxFor(model => model.StartDt, new { id = "DateSearching" })
+                </td>
+                <td><b>廠別</b></td>
+                <td>
+                    @Html.DropDownListFor(model => model.PlantCode, (List<SelectListItem>)ViewBag.plantcode, string.Empty, new { id = "PlantCodeSearching" })
+                </td>
+                <td><b>直別</b></td>
+                <td>
+                    @Html.DropDownListFor(model => model.ShiftType, (List<SelectListItem>)ViewBag.shifttype, string.Empty, new { id = "ShiftTypeSearching" })
+                </td>
+                <td><b>下線台數</b></td>
+                <td>
+                    @Html.TextBoxFor(model => model.Lineoff, new { id = "Lineoff"})
+                </td>
+            </tr>
+        </table>
+
+        <div class="row">
+            <div class="col-2">
+                <button type="submit" class="btn  btn-primary" id="SearchData" name="search" value="Search">查詢</button>
+            </div>
+            <div class="col-2">
+                <button type="submit" class="btn btn-dark" id="ExportBtn" name="export" value="Export">匯出資料</button>
+            </div>
+            <div class="col-2">
+                <button type="submit" class="btn btn-warning" id="deleteBtn" name="delete" value="Delete" onclick="return confirm('確定刪除?')">刪除資料</button>
+            </div>
+        </div>
+    </div>
+}
+<br />
+<div class="col-12">
+    @using (Html.BeginForm("ImportfromFile", "Create", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+        <input type="file" name="files" multiple />
+        <button type="submit" class="btn btn-info" name="submitType" value="Import" id="ImportBtn">
+            匯入資料
+        </button>
+        <button type="submit" class="btn btn-info" name="submitType" value="SampleDownload" id="SampleDownloadBtn">
+            下載上傳格式
+        </button>
+    }
+</div>
+
+<div id="SearchResultSection">
+    <br />
+
+    @if (ViewBag.SearchResult != null)
+    {
+        <table class="table table-bordered">
+            <tr>
+                <td>廠別</td>
+                <td>直別</td>
+                <td>計畫下線台數</td>
+                <td>起始日期</td>
+                <td>結束日期</td>
+                <td>刪除</td>
+            </tr>
+            @foreach (var item in (List<AP5_New.Models.PlanLineoff>)ViewBag.SearchResult)
+            {
+                <tr>
+                    <td>@item.PlantCode</td>
+                    <td>@item.ShiftType</td>
+                    <td>@item.Lineoff</td>
+                    <td>@item.StartDt</td>
+                    <td>@item.EndDt</td>
+                    <td style="text-align:center">
+                        @using (Html.BeginForm("DeleteSingleData", "Create", FormMethod.Post))
+                        {
+                            @Html.AntiForgeryToken()
+                            <button type="submit" name="key" value="@item.PlantCode,@item.ShiftType" class="btn  btn-danger" onclick="return confirm('確定刪除?')">刪除</button>
+                        }
+                    </td>
+
+                </tr>
+            }
+
+        </table>
+    }
+</div>
+@section Scripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+        });
+
+    </script>
+}
+

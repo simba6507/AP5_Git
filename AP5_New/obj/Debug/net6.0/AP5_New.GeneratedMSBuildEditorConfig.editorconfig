@@ -1,0 +1,108 @@
+is_global = true
+build_property.TargetFramework = net6.0
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = 
+build_property.PlatformNeutralAssembly = 
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property.RootNamespace = AP5_New
+build_property.RootNamespace = AP5_New
+build_property.ProjectDir = D:\backup\Project\AP5_New\AP5_New\
+build_property.RazorLangVersion = 6.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = true
+build_property.MSBuildProjectDirectory = D:\backup\Project\AP5_New\AP5_New
+build_property._RazorSourceGeneratorDebug = 
+
+[D:/backup/Project/AP5_New/AP5_New/Views/Container/Plan.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29udGFpbmVyXFBsYW4uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/backup/Project/AP5_New/AP5_New/Views/Container/_addContainerPartialView.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29udGFpbmVyXF9hZGRDb250YWluZXJQYXJ0aWFsVmlldy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/backup/Project/AP5_New/AP5_New/Views/Container/_editContainerPartialView.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29udGFpbmVyXF9lZGl0Q29udGFpbmVyUGFydGlhbFZpZXcuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/backup/Project/AP5_New/AP5_New/Views/Create/PlanLineOff.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ3JlYXRlXFBsYW5MaW5lT2ZmLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/backup/Project/AP5_New/AP5_New/Views/Home/Error.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxFcnJvci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/backup/Project/AP5_New/AP5_New/Views/Home/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/backup/Project/AP5_New/AP5_New/Views/Home/Privacy.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/backup/Project/AP5_New/AP5_New/Views/Module/Plan.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTW9kdWxlXFBsYW4uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/backup/Project/AP5_New/AP5_New/Views/Module/_addModulePartialView.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTW9kdWxlXF9hZGRNb2R1bGVQYXJ0aWFsVmlldy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/backup/Project/AP5_New/AP5_New/Views/Module/_editModulePartialView.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTW9kdWxlXF9lZGl0TW9kdWxlUGFydGlhbFZpZXcuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/backup/Project/AP5_New/AP5_New/Views/Operation/ContainerOperation.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcT3BlcmF0aW9uXENvbnRhaW5lck9wZXJhdGlvbi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/backup/Project/AP5_New/AP5_New/Views/Operation/ModuleOperation.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcT3BlcmF0aW9uXE1vZHVsZU9wZXJhdGlvbi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/backup/Project/AP5_New/AP5_New/Views/Shared/Error.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/backup/Project/AP5_New/AP5_New/Views/Shared/_blankLayout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9ibGFua0xheW91dC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/backup/Project/AP5_New/AP5_New/Views/Shared/_Layout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/backup/Project/AP5_New/AP5_New/Views/Shared/_ValidationScriptsPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/backup/Project/AP5_New/AP5_New/Views/Test/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGVzdFxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/backup/Project/AP5_New/AP5_New/Views/TV/CLContainer.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVFZcQ0xDb250YWluZXIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/backup/Project/AP5_New/AP5_New/Views/TV/CLModule.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVFZcQ0xNb2R1bGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/backup/Project/AP5_New/AP5_New/Views/TV/KNContainer.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVFZcS05Db250YWluZXIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/backup/Project/AP5_New/AP5_New/Views/TV/KNModule.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVFZcS05Nb2R1bGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/backup/Project/AP5_New/AP5_New/Views/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/backup/Project/AP5_New/AP5_New/Views/_ViewStart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 

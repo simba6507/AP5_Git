@@ -1,0 +1,166 @@
+﻿@model AP5_New.Models.ModMaster
+
+<div class="text-center" style="font-size:3rem;font-weight:bold">
+    <p>開梱作業</p>
+</div>
+
+
+@using (Html.BeginForm("ModuleOperation", "Operation", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    <div class="container-fluid placeholders">
+        <div class="row" id="SearchSection">
+            <div class="col-xs-10 col-md-3">
+                <h3>現在時間</h3>
+                <p id="showDateTime" style="font-size:1.3rem">
+
+                </p>
+            </div>
+            <div class="col-xs-10 col-md-2">
+                <h3>廠別</h3>
+                <p>
+                    @Html.DropDownListFor(model => model.PlantCode, (List<SelectListItem>)ViewBag.plantcode, new { @id = "plantCode", @class = "form-control" })
+                </p>
+            </div>
+            <div class="col-xs-10 col-md-2">
+                <h3>開梱台</h3>
+                <p>
+                    @Html.DropDownListFor(model => model.UnboxArea, (List<SelectListItem>)ViewBag.unboxarea, new { @id = "unboxArea", @class = "form-control" })
+                </p>
+            </div>
+            <div class="col-xs-10 col-md-3">
+                <div id="actualCount_part" style="font-size:3rem;font-weight:bold">
+                    <text style="font-size:1.6rem;">下線台數</text>
+                    <text id="actualCount_text"></text>
+                </div>
+            </div>
+            <div class="col-xs-10 col-md-2">
+                <button type="submit" name="search" value="Search" style="font-size:35px;" class="btn btn-primary" id="SearchBtn">查詢</button>
+            </div>
+        </div>
+    </div>
+
+<br />
+    @if (ViewBag.SearchResult != null)
+    {
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>直別</th>
+                    <th>計畫開梱台數</th>
+                    <th>MOD_NO</th>
+                    <th>理論作業時間</th>
+                    <th>開梱台編號</th>
+                    <th>國別</th>
+                    <th>車種</th>
+                    <th>備註</th>
+                    <th>狀態</th>
+                </tr>
+            </thead>
+            <tbody id="dataTable">
+                @foreach (var item in (List<AP5_New.Models.ModMaster>)ViewBag.SearchResult)
+                {
+                <tr class="data">
+                    <td>@item.ShiftType</td>
+                    <td>@item.LineoffCount</td>
+                    <td>@item.ModNo</td>
+                    <td>@item.LogicalTime</td>
+                    <td>@item.UnboxArea</td>
+                    <td>@item.Country</td>
+                    <td>@item.CarType</td>
+                    <td>@item.Mark</td>
+                    <td>@item.ModStatus</td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    }
+
+    <div class="text-center">
+        <button type="submit" name ="start" value="Start" class="btn btn-primary" style="font-size:35px;" id="startOpBtn">開始開梱</button>
+        <button type="submit" name ="end" value="End" class="btn btn-success" style="font-size:35px;" id="endOpBtn">結束開梱</button>
+    </div>
+}
+
+@section Scripts{
+    <script type="text/javascript">
+
+
+
+        $(document).ready(function () {
+
+            window.onload = ShowDateTime;
+            setInterval(getActualCount, 1000);
+            setInterval(meetCount, 1000);
+
+            function getActualCount() {
+                let plantCode = $("#plantCode").val();
+                $.ajax({
+                    type: 'POST',
+                    data: { plantCode: plantCode },
+                    url: "@Url.Action("GetLineOff", "Operation")",
+                    dataType: "json",
+                    success: function (result) {
+                        $("#actualCount_text").remove();
+                        $("#actualCount_part").append('<text id="actualCount_text">' + result.actualCount + '</text>');
+                        window.actualCount = $('#actualCount').text();
+                    },
+                    error: function (xhr, textStatus, error) {
+                    }
+                });
+            }
+
+            function meetCount() {
+                let actualCount = parseInt($('#actualCount_text').text());
+                let count = parseInt($('#dataTable').find('td:eq(1)').text().trim());
+                //console.log($('#actualCount_text').text());
+                if (count <= actualCount) {
+                    // $('#startOpBtn').prop('disabled', false);
+                    if ($('#dataTable').find('td:eq(8)').text() == "開梱中") {
+                        $('#startOpBtn').prop('disabled', true);
+                        $('#endOpBtn').prop('disabled', false);
+                    }
+                    if($('#dataTable').find('td:eq(8)').text() == "未開梱") {
+                        $('#startOpBtn').prop('disabled', false);
+                        $('#endOpBtn').prop('disabled', true);
+                    }
+                    light();
+                } else {
+                    $('#startOpBtn').prop('disabled', true);
+                    $('#endOpBtn').prop('disabled', true);
+                    //console.log('123')
+                };
+            }
+
+            //實際台數與計畫台數吻合的話
+            var x = 0;
+            function light() {
+                var darkThemeSelected =
+                    localStorage.getItem("darkSwitch") !== null &&
+                    localStorage.getItem("darkSwitch") === "dark";
+                darkSwitch.checked = darkThemeSelected;
+                if (darkSwitch.checked) {
+                    if (x % 2 == 0) {
+                        $('#dataTable  tr:first-child').css({ "background-color": "yellow", "color": "black" });
+                        x++;
+                    } else {
+                        $('#dataTable  tr:first-child').css({ "background-color": "#2e2e2e", "color": "black" });
+                        x--;
+                    }
+                } else {
+                    if (x % 2 == 0) {
+                        $('#dataTable  tr:first-child').css({ "background-color": "yellow", "color": "black" });
+                        x++;
+                    } else {
+                        $('#dataTable  tr:first-child').css({ "background-color": "white", "color": "black" });
+                        x--;
+                    }
+                }
+
+                
+            }
+
+        });
+
+    </script>
+}

@@ -1,0 +1,76 @@
+﻿@model AP5_New.Models.ModMaster
+
+<div class="modal fade" id="addModule">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="addModuleTitle">新增</h4>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span>x</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                @using (Html.BeginForm("NewModule", "Module", FormMethod.Post, new { id = "Form1" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <div class="form-group">
+                        <label asp-for="UnboxDate"></label>
+                        <input asp-for="UnboxDate" class="form-control" />
+                        <span asp-validation-for="UnboxDate" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="ModNo"></label>
+                        <input asp-for="ModNo" class="form-control" />
+                        <span asp-validation-for="ModNo" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="PlantCode"></label>
+                        <input asp-for="PlantCode" class="form-control" />
+                        <span asp-validation-for="PlantCode" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="CarType"></label>
+                        <input asp-for="CarType" class="form-control" />
+                        <span asp-validation-for="CarType" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Country"></label>
+                        <input asp-for="Country" class="form-control" />
+                        <span asp-validation-for="Country" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="ShiftType"></label>
+                        <input asp-for="ShiftType" class="form-control" />
+                        <span asp-validation-for="ShiftType" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="UnboxArea"></label>
+                        <input asp-for="UnboxArea" class="form-control" />
+                        <span asp-validation-for="UnboxArea" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="LineoffCount"></label>
+                        <input asp-for="LineoffCount" class="form-control" />
+                        <span asp-validation-for="LineoffCount" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Mark"></label>
+                        <input asp-for="Mark" class="form-control" />
+                        <span asp-validation-for="Mark" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="LogicalTime"></label>
+                        <input asp-for="LogicalTime" class="form-control" />
+                        <span asp-validation-for="LogicalTime" class="text-danger"></span>
+                    </div>
+                }
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">關閉</button>
+                <button type="button" class="btn btn-success" data-save="modal">確定新增</button>
+            </div>
+        </div>
+    </div>
+</div>

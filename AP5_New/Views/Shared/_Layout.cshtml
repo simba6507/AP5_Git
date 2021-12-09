@@ -1,0 +1,81 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>進度開梱系統</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    @*<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap-dark.css">*@
+    <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/css/bootstrap4-toggle.css" />
+    <link rel="stylesheet" href="~/css/bootstrap-datetimepicker.css" />
+    <link rel="stylesheet" href="~/css/dark-mode.css" />
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/bootstrap4-toggle.js"></script>
+    <script src="~/js/moment.js"></script>
+    <script src="~/js/moment-with-locales.js"></script>
+    <script src="~/js/bootstrap-datetimepicker.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input" id="darkSwitch" />
+                <label class="custom-control-label" for="darkSwitch">深色模式</label>
+            </div>
+            <script src="~/js/dark-mode-switch.js"></script>
+            <div class="container">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">進度開梱系統</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">
+                        @*<li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                    </li>*@
+                        <li class="nav-item dropdown">
+                            <a class="nav-link  dropdown-toggle" href="#" data-toggle="dropdown">計畫做成</a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Module" asp-action="Plan"> 開梱計畫做成</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Container" asp-action="Plan"> 下櫃計畫做成</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link  dropdown-toggle" href="#" data-toggle="dropdown">開梱、下櫃作業</a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Operation" asp-action="ModuleOperation"> 開梱作業</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Operation" asp-action="ContainerOperation"> 下櫃作業</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link  dropdown-toggle" href="#" data-toggle="dropdown">TV畫面</a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" asp-area="" asp-controller="TV" asp-action="CLModule"> 中壢開梱TV</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="TV" asp-action="CLContainer"> 中壢下櫃TV</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="TV" asp-action="KNModule"> 觀音開梱TV</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="TV" asp-action="KNContainer"> 觀音下櫃TV</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container-fluid">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 進度開梱系統
+        </div>
+    </footer>
+</body>
+</html>

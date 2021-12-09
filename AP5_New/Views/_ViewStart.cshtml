@@ -1,0 +1,16 @@
+﻿@{
+    string ControllerName = ViewContext.RouteData.Values["controller"].ToString();
+    switch (ControllerName)
+    {
+        case "Operation":
+            Layout = "~/Views/Shared/_blankLayout.cshtml";
+            break;
+        case "TV":
+            Layout = "~/Views/Shared/_blankLayout.cshtml";
+            break;
+        default:
+            Layout = "~/Views/Shared/_Layout.cshtml";
+            break;
+    }
+
+}

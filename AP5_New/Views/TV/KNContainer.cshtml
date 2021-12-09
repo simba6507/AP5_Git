@@ -1,0 +1,183 @@
+﻿@model AP5_New.Models.ContainerMaster
+
+
+<h2 style="text-align:center">觀音下櫃進度畫面</h2>
+<div class="col-xs-10 col-md-3">
+    <div id="actualCount_part" style="font-size:3rem;font-weight:bold">
+        <text style="font-size:1.6rem;">下線台數</text>
+        <text id="actualCount_text"></text>
+    </div>
+</div>
+
+<div id="SearchResultSection">
+
+    @if (ViewBag.SearchResult1 != null)
+    {
+        <div class="openStageNo">碼頭 1</div>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>國別</th>
+                    <th>貨櫃號碼</th>
+                    <th>貨櫃連番</th>
+                    <th>計畫L/O台數</th>
+                    <th>計畫作業時間</th>
+                    <th>實際作業時間</th>
+                    <th>作業時間差</th>
+                    <th>狀態</th>
+                </tr>
+            </thead>
+            <tbody id="dataTable1">
+                @{int i = 1;}
+                @foreach (var item in (List<AP5_New.Models.ContainerMaster>)ViewBag.SearchResult1)
+                {
+
+                    <tr class="data">
+                        <td>@i</td>
+                        <td>@item.Country</td>
+                        <td>@item.ContainerNo</td>
+                        <td>@item.ContainerRenban</td>
+                        <td>@item.LineoffCount</td>
+                        <td>@item.LogicalTime</td>
+                        <td>@item.ProcessTime</td>
+                        <td>@Html.Raw(string.Format("{0}", (@item.ProcessTime - @item.LogicalTime)))</td>
+                        <td>@item.ContainerStatus</td>
+                    </tr>
+                    i++;
+                }
+            </tbody>
+        </table>
+    }
+
+    @if (ViewBag.SearchResult2 != null)
+    {
+        <div class="openStageNo">碼頭 2</div>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>國別</th>
+                    <th>貨櫃號碼</th>
+                    <th>貨櫃連番</th>
+                    <th>計畫L/O台數</th>
+                    <th>計畫作業時間</th>
+                    <th>實際作業時間</th>
+                    <th>作業時間差</th>
+                    <th>狀態</th>
+                </tr>
+            </thead>
+            <tbody id="dataTable2">
+                @{int i = 1;}
+                @foreach (var item in (List<AP5_New.Models.ContainerMaster>)ViewBag.SearchResult2)
+                {
+
+                    <tr class="data">
+                        <td>@i</td>
+                        <td>@item.Country</td>
+                        <td>@item.ContainerNo</td>
+                        <td>@item.ContainerRenban</td>
+                        <td>@item.LineoffCount</td>
+                        <td>@item.LogicalTime</td>
+                        <td>@item.ProcessTime</td>
+                        <td>@Html.Raw(string.Format("{0}", (@item.ProcessTime - @item.LogicalTime)))</td>
+                        <td>@item.ContainerStatus</td>
+                    </tr>
+                    i++;
+                }
+            </tbody>
+        </table>
+    }
+    @*<button type="button" class="btn btn-primary col-sm-offset-4" id="startOpBtn">開始開梱</button>
+        <button type="button" class="btn btn-success col-sm-offset-1" id="endOpBtn">結束開梱</button>*@
+</div>
+
+
+
+@section scripts{
+    <script language="JavaScript">
+
+        $(document).ready(function () {
+            setInterval(getActualCount, 1000);
+            setInterval(meetCount, 1000);
+            setInterval(refreshView, 10000);
+        });
+
+        function refreshView(timeoutPeriod) {
+            setTimeout(function () {
+                location.reload(true);
+            }, -1);
+        }
+
+        var d = "";
+
+        //取得實際台數
+         function getActualCount() {
+            $.ajax({
+                type: 'POST',
+                data: { plantCode: "721C" },
+                url: "@Url.Action("GetLineOff", "Operation")",
+                dataType: "json",
+                success: function (result) {
+                    $("#actualCount_text").remove();
+                    $("#actualCount_part").append('<text id="actualCount_text">' + result.actualCount + '</text>');
+                    window.actualCount = $('#actualCount').text();
+                },
+                error: function (xhr, textStatus, error) {
+                }
+            });
+         }
+
+        //實際台數與計畫台數吻合的話
+        function meetCount() {
+            var darkThemeSelected =
+                localStorage.getItem("darkSwitch") !== null &&
+                localStorage.getItem("darkSwitch") === "dark";
+            darkSwitch.checked = darkThemeSelected;
+
+            let actualCount = parseInt($('#actualCount_text').text());
+            let count1 = parseInt($('#dataTable1 tr:nth-child(2)').find('td:eq(4)').text().trim());
+            let count2 = parseInt($('#dataTable2 tr:nth-child(2)').find('td:eq(4)').text().trim());
+            //console.log(count1);
+            //console.log(count2);
+            if (count1 <= actualCount) {
+                light1();
+            } else {
+                $('#dataTable1  tr:nth-child(2)').css({ "background-color": "white", "color": "black" });
+            };
+
+            if (count2 <= actualCount) {
+                light2();
+            } else {
+                $('#dataTable2  tr:nth-child(2)').css({ "background-color": "white", "color": "black" });
+            };
+        }
+
+        var x1 = 0;
+        function light1() {
+
+            if (x1 % 2 == 0) {
+                $('#dataTable1  tr:nth-child(2)').css({ "background-color": "yellow", "color": "black" });
+                x1++;
+            } else {
+                $('#dataTable1  tr:nth-child(2)').css({ "background-color": "white", "color": "black" });
+                x1--;
+            }
+
+        }
+
+        var x2 = 0;
+        function light2() {
+            if (x2 % 2 == 0) {
+                $('#dataTable2  tr:nth-child(2)').css({ "background-color": "yellow", "color": "black" });
+                x2++;
+            } else {
+                $('#dataTable2  tr:nth-child(2)').css({ "background-color": "white", "color": "black" });
+                x2--;
+            }
+        }
+
+
+    </script>
+
+}

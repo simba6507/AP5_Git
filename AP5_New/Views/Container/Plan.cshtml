@@ -1,0 +1,162 @@
+﻿@model AP5_New.Models.ContainerMaster
+@{
+    ViewData["Title"] = "下櫃計畫做成";
+}
+<div class="text-center">
+    <h2>下櫃計畫做成</h2>
+    @*<div class="text-danger" id="erroMessage">
+            @TempData["Message"]
+      </div>*@
+    @if (TempData["Message"] != null)
+    {
+        <div class="alert alert-danger" id="success-alert">
+            <button type="button" class="close" data-dismiss="alert">x</button>
+            @TempData["Message"]
+        </div>
+    }
+</div>
+
+@using (Html.BeginForm("Plan", "Container", FormMethod.Post, new { id = "Form1" }))
+{
+    @Html.AntiForgeryToken()
+    <div id="SearchConditionSection" class="col-12">
+        <table class="table table-bordered">
+            <tr>
+                <td><b>下櫃日期</b></td>
+                <td>
+                    @Html.TextBoxFor(model => model.UnboxDate, new { id = "DateSearching", @class = "form-control" })
+                </td>
+                <td><b>碼頭代號</b></td>
+                <td>
+                    @Html.DropDownListFor(model => model.DockNo, (List<SelectListItem>)ViewBag.dockno, string.Empty, new { id = "UnboxAreaSearching", @class = "form-control" })
+                </td>
+            </tr>
+            <tr>
+                <td><b>廠別</b></td>
+                <td>
+                    @Html.DropDownListFor(model => model.PlantCode, (List<SelectListItem>)ViewBag.plantcode, string.Empty, new { id = "PlantCodeSearching", @class = "form-control" })
+                </td>
+                <td><b>國別</b></td>
+                <td>
+                    @Html.DropDownListFor(model => model.Country, (List<SelectListItem>)ViewBag.country, string.Empty, new { id = "CountrySearching", @class = "form-control" })
+                </td>
+            </tr>
+        </table>
+
+        <div class="row">
+            <div class="col-2">
+                <button type="submit" class="btn  btn-primary" id="SearchData" name="search" value="Search">查詢</button>
+            </div>
+            <div class="col-2">
+                <button type="submit" class="btn btn-dark" id="ExportBtn" name="export" value="Export">匯出資料</button>
+            </div>
+            <div class="col-2">
+                <button type="submit" class="btn btn-warning" id="deleteBtn" name="delete" value="Delete" onclick="return confirm('確定刪除?')">刪除資料</button>
+            </div>
+            <div class="col-2">
+                <button type="button" class="btn btn-success" data-toggle="ajax-modal" data-target="#addModule" data-url="@Url.Action("NewContainer")">
+                    +新增Container
+                </button>
+            </div>
+        </div>
+    </div>
+}
+<br />
+<div class="col-12">
+    @using (Html.BeginForm("ImportfromFile", "Container", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+        <input type="file" name="files" multiple />
+        <button type="submit" class="btn btn-info" name="submitType" value="Import" id="ImportBtn">
+            匯入資料
+        </button>
+        <button type="submit" class="btn btn-info" name="submitType" value="SampleDownload" id="SampleDownloadBtn">
+            下載匯入格式
+        </button>
+    }
+</div>
+
+<div id="SearchResultSection">
+    <br />
+
+    @if (ViewBag.SearchResult != null)
+    {
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>直別</th>
+                    <th>計畫下櫃台數</th>
+                    <th>貨櫃號碼</th>
+                    <th>貨櫃連番</th>
+                    <th>理論作業時間</th>
+                    <th>碼頭代號</th>
+                    <th>國別</th>
+                    <th>備註</th>
+                    <th>刪除</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in (List<AP5_New.Models.ContainerMaster>)ViewBag.SearchResult)
+                {
+                    <tr>
+                        <td>@item.ShiftType</td>
+                        <td>@item.LineoffCount</td>
+                        <td>@item.ContainerNo</td>
+                        <td>@item.ContainerRenban</td>
+                        <td>@item.LogicalTime</td>
+                        <td>@item.DockNo</td>
+                        <td>@item.Country</td>
+                        <td>@item.Mark</td>
+                        <td style="text-align:center">
+                            <button type="button" class="btn btn-success" data-toggle="ajax-modal" data-target="#editContainer" data-url="@Url.Action($"EditContainer/?containerNo={item.ContainerNo}&country={item.Country}&containerRenban={item.ContainerRenban}")">
+                                編輯
+                            </button>
+                            @using (Html.BeginForm("DeleteSingleData", "Container", FormMethod.Post))
+                            {
+                                @Html.AntiForgeryToken()
+                                <button type="submit" name="key" value="@item.ContainerNo,@item.Country,@item.ContainerRenban" class="btn  btn-danger" onclick="return confirm('確定刪除?')">刪除</button>
+                            }
+                        </td>
+
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>
+<div id="ModalArea"</div>
+@section Scripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $('#DateSearching').datetimepicker({
+                format: "YYYYMMDD",
+                locale: "zh-tw"
+            });
+
+            var ModalArea = $('#ModalArea');
+
+            $('button[data-toggle="ajax-modal"]').click(function () {
+
+                var url = $(this).data('url');
+                var decodedUrl = decodeURIComponent(url);
+                $.get(decodedUrl).done(function (data) {
+                    ModalArea.html(data);
+                    ModalArea.find('.modal').modal('show');
+                });
+            })
+
+            ModalArea.on('click', '[data-save="modal"]', function (event) {
+                var form = $(this).parents('.modal').find('form');
+                var actionUrl = form.attr('action');
+                var sendData = form.serialize();
+                $.post(actionUrl, sendData).done(function (data) {
+                    ModalArea.find('.modal').modal('hide');
+                    location.reload();
+                })
+            })
+        });
+
+    </script>
+}
+

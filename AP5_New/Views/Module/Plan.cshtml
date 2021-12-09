@@ -1,0 +1,184 @@
+﻿@model AP5_New.Models.ModMaster
+@{
+    ViewData["Title"] = "開梱計畫做成";
+}
+
+<div class="text-center">
+    <h2>開梱計畫做成</h2>
+    @*<div class="text-danger" id="erroMessage">
+        @TempData["Message"]
+        </div>*@
+    @if (TempData["Message"] != null)
+    {
+        <div class="alert alert-danger" id="danger-alert">
+            <button type="button" class="close" data-dismiss="alert">x</button>
+            <strong>@TempData["Message"]</strong>
+        </div>
+    }
+
+</div>
+
+@*<div class="input-group mb-3">
+    <div class="input-group-prepend">
+    <span class="input-group-text test" id="inputGroup-sizing-default">Default</span>
+    </div>
+    <input type="text" class="form-control" placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="basic-addon2">
+    <div class="input-group-append">
+    <button class="btn btn-outline-secondary" type="button">Button</button>
+    </div>
+    </div>*@
+
+@using (Html.BeginForm("Plan", "Module", FormMethod.Post, new { id = "Form1" }))
+{
+    @Html.AntiForgeryToken()
+    <div id="SearchConditionSection" class="col-12">
+        <table class="table table-bordered">
+            <tr>
+                <td><b>開梱日期</b></td>
+                <td>
+                    @Html.TextBoxFor(model => model.UnboxDate, new { id = "DateSearching", @class = "form-control" })
+                </td>
+                <td><b>開梱台編號</b></td>
+                <td>
+                    @Html.DropDownListFor(model => model.UnboxArea, (List<SelectListItem>)ViewBag.unboxarea, string.Empty, new { id = "UnboxAreaSearching", @class = "form-control" })
+                </td>
+            </tr>
+            <tr>
+                <td><b>廠別</b></td>
+                <td>
+                    @Html.DropDownListFor(model => model.PlantCode, (List<SelectListItem>)ViewBag.plantcode, string.Empty, new { id = "PlantCodeSearching", @class = "form-control" })
+                </td>
+                <td><b>國別</b></td>
+                <td>
+                    @Html.DropDownListFor(model => model.Country, (List<SelectListItem>)ViewBag.country, string.Empty, new { id = "CountrySearching", @class = "form-control" })
+                </td>
+            </tr>
+        </table>
+
+        <div class="row">
+            <div class="col-md-2 col-sm-12">
+                <button type="submit" class="btn  btn-primary" id="SearchData" name="btnValue" value="Search">查詢</button>
+            </div>
+            <div class="col-md-2 col-sm-12">
+                <button type="submit" class="btn btn-dark" id="ExportBtn" name="btnValue" value="Export">匯出資料</button>
+            </div>
+            <div class="col-md-2 col-sm-12">
+                <button type="submit" class="btn btn-warning" id="deleteBtn" name="btnValue" value="Delete" onclick="confirm('確定刪除?')">刪除資料</button>
+            </div>
+            <div class="col-md-2 col-sm-12">
+                <button type="button" class="btn btn-success" data-toggle="ajax-modal" data-target="#addModule" data-url="@Url.Action("NewModule")">
+                    +新增Module
+                </button>
+            </div>
+
+        </div>
+    </div>
+}
+<br />
+<div class="col-12">
+    @using (Html.BeginForm("ImportfromFile", "Module", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+        <input type="file" name="files" multiple />
+        <button type="submit" class="btn btn-info" name="submitType" value="Import" id="ImportBtn">
+            匯入資料
+        </button>
+        <button type="submit" class="btn btn-info" name="submitType" value="SampleDownload" id="SampleDownloadBtn">
+            下載匯入格式
+        </button>
+    }
+</div>
+
+<div id="SearchResultSection">
+    <br />
+
+    @if (ViewBag.SearchResult != null)
+    {
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>開梱日期</th>
+                    <th>廠別</th>
+                    <th>直別</th>
+                    <th>計畫開梱台數</th>
+                    <th>MOD_NO</th>
+                    <th>理論作業時間</th>
+                    <th>開梱台編號</th>
+                    <th>國別</th>
+                    <th>車種</th>
+                    <th>備註</th>
+                    <th>動作</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in (List<AP5_New.Models.ModMaster>)ViewBag.SearchResult)
+                {
+                    <tr>
+                        <td>@item.UnboxDate</td>
+                        <td>@item.PlantCode</td>
+                        <td>@item.ShiftType</td>
+                        <td>@item.LineoffCount</td>
+                        <td>@item.ModNo</td>
+                        <td>@item.LogicalTime</td>
+                        <td>@item.UnboxArea</td>
+                        <td>@item.Country</td>
+                        <td>@item.CarType</td>
+                        <td>@item.Mark</td>
+                        <td>
+                            <button type="button" class="btn btn-success" data-toggle="ajax-modal" data-target="#editModule" data-url="@Url.Action($"EditModule/?modNo={item.ModNo}&country={item.Country}&carType={item.CarType}")">
+                                編輯
+                            </button>
+
+                            @using (Html.BeginForm("DeleteSingleData", "Module", FormMethod.Post))
+                            {
+                                @Html.AntiForgeryToken()
+                                <button type="submit" name="key" value="@item.ModNo,@item.Country,@item.CarType" class="btn  btn-danger">刪除</button>
+                            }
+                        </td>
+
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>
+<div id="ModalArea"></div>
+@section Scripts{
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $('#DateSearching').datetimepicker({
+            format: "YYYYMMDD",
+            locale: "zh-tw"
+        });
+
+        var ModalArea = $('#ModalArea');
+
+        $('button[data-toggle="ajax-modal"]').click(function () {
+            var url = $(this).data('url');
+            var decodedUrl = decodeURIComponent(url);
+            $.get(decodedUrl).done(function (data) {
+                ModalArea.html(data);
+                ModalArea.find('.modal').modal('show');
+            });
+        })
+
+        ModalArea.on('click', '[data-save="modal"]', function (event) {
+            var form = $(this).parents('.modal').find('form');
+            var actionUrl = form.attr('action');
+            var sendData = form.serialize();
+            $.post(actionUrl, sendData).done(function (data) {
+                ModalArea.find('.modal').modal('hide');
+                location.reload();
+            })
+        })
+
+        $(".alert").fadeTo(4000, 500).slideUp(500, function () {
+            $(".alert").slideUp(500);
+        });
+
+    })
+
+</script>
+}
+

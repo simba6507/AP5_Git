@@ -1,0 +1,127 @@
+﻿@model PaginatedList<ModMaster>;
+
+<div id="SearchResultSection">
+    <br />
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>開梱日期</th>
+                <th>廠別</th>
+                <th>直別</th>
+                <th>計畫開梱台數</th>
+                <th>MOD_NO</th>
+                <th>理論作業時間</th>
+                <th>開梱台編號</th>
+                <th>國別</th>
+                <th>車種</th>
+                <th>備註</th>
+                <th>動作</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.UnboxDate</td>
+                    <td>@item.PlantCode</td>
+                    <td>@item.ShiftType</td>
+                    <td>@item.LineoffCount</td>
+                    <td>@item.ModNo</td>
+                    <td>@item.LogicalTime</td>
+                    <td>@item.UnboxArea</td>
+                    <td>@item.Country</td>
+                    <td>@item.CarType</td>
+                    <td>@item.Mark</td>
+                    <td>
+                        <button type="button" class="btn btn-success" data-toggle="ajax-modal" data-target="#editModule" data-url="@Url.Action($"EditModule/?modNo={item.ModNo}&country={item.Country}&carType={item.CarType}")">
+                            編輯
+                        </button>
+
+                        @using (Html.BeginForm("DeleteSingleData", "Module", FormMethod.Post))
+                        {
+                            @Html.AntiForgeryToken()
+                            <button type="submit" name="key" value="@item.ModNo,@item.Country,@item.CarType" class="btn  btn-danger">刪除</button>
+                        }
+                    </td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    @{
+        var prevDisable = !Model.PreviousPage ? "disabled" : "";
+        var nextDisabled = !Model.NextPage ? "disabled" : "";
+        var nowPageDisable = "";
+    }
+
+    <div>
+        <nav aria-label="Page navigation">
+            <ul class="pagination">
+                <li class="page-item @prevDisable"><a class="page-link" asp-action="Index" asp-route-pageNumber="1">第一頁</a></li>
+                <li class="page-item @prevDisable">
+                    <a class="page-link " asp-action="Index" asp-route-pageNumber="@(Model.PageIndex -1)" aria-label="上一頁">
+                        <span aria-hidden="true">上一頁</span>
+                    </a>
+                </li>
+                @for (int i = -2; i <= 2; i++)
+                {
+
+                    if (Model.TotalPages >= i + Model.PageIndex)
+                    {
+                        if (@Model.PageIndex > 2)
+                        {
+                            if (i == 0)
+                            {
+                                nowPageDisable = "disabled";
+                            }
+                            else
+                            {
+                                nowPageDisable = "";
+                            }
+
+                            <li class="page-item @nowPageDisable"><a class="page-link" asp-action="Index" asp-route-pageNumber="@(Model.PageIndex +i)">@(Model.PageIndex+i)</a></li>
+                        }
+                        else if (@Model.PageIndex == 1)
+                        {
+                            if (i == -2)
+                            {
+                                nowPageDisable = "disabled";
+                            }
+                            else
+                            {
+                                nowPageDisable = "";
+                            }
+                            var num = 2 + i;
+                            <li class="page-item @nowPageDisable"><a class="page-link" asp-action="Index" asp-route-pageNumber="@(Model.PageIndex +num)">@(Model.PageIndex+ num)</a></li>
+                        }
+                        else if (@Model.PageIndex == 2)
+                        {
+                            if (i == -1)
+                            {
+                                nowPageDisable = "disabled";
+                            }
+                            else
+                            {
+                                nowPageDisable = "";
+                            }
+                            var num = 1 + i;
+                            <li class="page-item @nowPageDisable"><a class="page-link" asp-action="Index" asp-route-pageNumber="@(Model.PageIndex +num)">@(Model.PageIndex+ num)</a></li>
+                        }
+                    }
+
+                }
+
+                <li class="page-item @nextDisabled">
+                    <a class="page-link " asp-action="Index" asp-route-pageNumber="@(Model.PageIndex +1)" aria-label="下一頁">
+                        <span aria-hidden="true">下一頁</span>
+                    </a>
+                </li>
+                <li class="page-item @nextDisabled"><a class="page-link" asp-action="Index" asp-route-pageNumber="@(Model.TotalPages)">最後一頁</a></li>
+            </ul>
+        </nav>
+        目前第 @Model.PageIndex 頁, 顯示 @Model.TotalRecord 的 @((Model.PageIndex-1)*@Model.PageSize+1) ~ @(@Model.PageIndex*@Model.PageSize> @Model.TotalRecord ? @Model.TotalRecord : @Model.PageIndex * @Model.PageSize )
+    </div>
+   
+
+</div>
